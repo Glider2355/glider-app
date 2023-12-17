@@ -1,0 +1,77 @@
+openapi: 3.0.3
+
+servers:
+  - url: http://localhost/api
+    description: ローカル環境
+  - url: https://www.api.glider-copilot.club/api
+    description: 本番環境
+
+info:
+  title: 合宿出入りAPI
+  version: 1.0.0
+
+paths:
+  /camp/join/{camp_id}:
+    get:
+      security:
+        - BearerAuth: []
+      summary: 合宿出入り一覧取得
+      description: 合宿出入りを取得する
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CampAttendances'
+
+components:
+  schemas:
+    CampAttendances:
+      type: object
+      properties:
+        user_id:
+          type: integer
+          description: ユーザーID
+          format: int64
+          example: 1
+        user_first_name:
+          type: string
+          description: 名
+          example: 美加子
+        user_last_name:
+          type: string
+          description: 姓
+          example: 田中
+        grade:
+          type: string
+          description: 学年
+          example: M2
+        licence_deadline:
+          type: string
+          description: 練習許可書期限
+          example: 2023-11-04
+        age:
+          type: integer
+          description: 年齢
+          example: 23
+        user_role:
+          type: array
+          description: 係
+          example: ["21", "(リトリブ)"]
+        attendances:
+          type: array
+          description: 出入り
+          example: [{
+              2023-11-01: "朝来",
+              2023-11-02: "◯",
+              2023-11-03: "◯",
+              2023-11-04: "夜帰",
+            }]
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

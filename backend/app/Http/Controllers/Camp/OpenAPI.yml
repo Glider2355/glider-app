@@ -1,0 +1,60 @@
+openapi: 3.0.3
+
+servers:
+  - url: http://localhost/api
+    description: ローカル環境
+  - url: https://www.api.glider-copilot.club/api
+    description: 本番環境
+
+info:
+  title: 合宿API
+  version: 1.0.0
+
+paths:
+  /camp:
+    get:
+      security:
+        - BearerAuth: []
+      summary: 合宿一覧取得
+      description: 合宿一覧を取得する
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Camp'
+
+components:
+  schemas:
+    Camp:
+      type: object
+      properties:
+        id:
+          type: integer
+          description: 合宿ID
+          format: int64
+          example: 1
+        name:
+          type: string
+          description: 合宿名
+          example: 11月〇〇木曽川合宿
+        location:
+          type: string
+          description: 合宿場所(木曽川、大野、福井)
+          example: 木曽川
+        start_date:
+          type: string
+          description: 合宿開始日
+          example: 2023-11-01
+        end_date:
+          type: string
+          description: 合宿終了日
+          example: 2023-11-04
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
